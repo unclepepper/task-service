@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\CheckAdminRoleMiddleware;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,7 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 // Users
 // Получение списка всех пользователей (только для администратора).
-Route::get('/users', [UserController::class, 'users'])->middleware('auth:sanctum', 'admin');
+Route::get('/users', [UserController::class, 'users'])->middleware('auth:sanctum', 'role_admin');
 
 // Получение информации о текущем пользователе
 Route::get('/users/current', [UserController::class, 'current'])->middleware('auth:sanctum');
@@ -28,7 +27,5 @@ Route::get('/users/current', [UserController::class, 'current'])->middleware('au
 Route::patch('/users', [UserController::class, 'update'])->middleware('auth:sanctum');
 
 //Удаление пользователя (только администратор может удалить пользователя).
-Route::delete('/users/{id}', [UserController::class, 'delete'])->middleware('auth:sanctum', 'admin');
-
-
+Route::delete('/users/{id}', [UserController::class, 'delete'])->middleware('auth:sanctum', 'role_admin');
 

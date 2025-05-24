@@ -16,9 +16,7 @@ class CheckAdminRoleMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if(request()->user()->role !== 2){
-            return response()->json([
-                'message' => 'Access denied',
-            ]);
+            return response()->json(['message' => 'Access denied'], 403);
         }
 
         return $next($request);

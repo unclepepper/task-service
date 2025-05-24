@@ -86,7 +86,7 @@ class UserController extends Controller
 
         $this->userRepository->delete($user);
 
-        return response()->json(null, 204);
+        return response()->json(['message' => sprintf('The user id= %d was successfully deleted', $id)]);
     }
 
     private function getValidationRules(array $data): array
