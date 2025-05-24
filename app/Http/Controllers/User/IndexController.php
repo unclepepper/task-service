@@ -6,6 +6,7 @@ namespace App\Http\Controllers\User;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -22,6 +23,10 @@ class IndexController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json($this->userRepository->findAll());
+        return response()->json(
+            UserResource::collection(
+                new UserResource($this->userRepository->findAll())
+            )
+        );
     }
 }

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\User;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -47,22 +48,9 @@ class EditController extends Controller
             throw new ValidationException($validator);
         }
 
-        try
-        {
+        $userUpdated = $this->userRepository->update($user, $data);
 
-            $userUpdated = $this->userRepository->update($user, $data);
-
-            return response()->json($userUpdated);
-        }
-        catch(ModelNotFoundException $e)
-        {
-            return response()->json(['message' => 'Task not found'], 404);
-        }
-        catch(ValidationException $e)
-        {
-            return response()->json(['errors' => $e->errors()], 400);
-        }
-
+        return response()->json(new UserResource($userUpdated));
 
     }
 

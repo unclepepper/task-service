@@ -6,6 +6,7 @@ namespace App\Http\Controllers\User;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -23,8 +24,14 @@ class CurrentController extends Controller
 
     public function current(Request $request): JsonResponse
     {
-        $user = $request->user();
+        $currentUser = $request->user();
 
-        return response()->json($this->userRepository->getById($user->id));
+        $user = $this->userRepository->getById($currentUser->id);
+
+        if(null === $user) {
+            throw new ModelNotFoundException('User not found');
+        }
+
+        return response()->json(new UserResource($user));
     }
 }
