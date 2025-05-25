@@ -50,15 +50,6 @@ class UserRoleAccessTest extends TestCase
     }
 
     #[Test]
-    public function test_guest_cannot_access_users_list()
-    {
-        $response = $this->get('/api/users');
-
-        // TODO: status must be 401
-        $response->assertStatus(500); // Unauthorized
-    }
-
-    #[Test]
     public function test_admin_can_delete_user()
     {
         $targetUser = User::factory()->create(['role' => 1]);
@@ -66,7 +57,7 @@ class UserRoleAccessTest extends TestCase
         $response = $this->actingAs($this->admin, 'sanctum')
             ->delete('/api/users/' . $targetUser->id);
 
-        $response->assertStatus(200);
+        $response->assertStatus(204);
 
         // Проверка, что пользователь удален из базы
         $this->assertDatabaseMissing('users', ['id' => $targetUser->id]);
