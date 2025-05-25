@@ -46,10 +46,10 @@ class IndexController extends Controller
 
     public function index(): JsonResponse
     {
+        $users = $this->userRepository->findAll();
+
         return response()->json(
-            UserResource::collection(
-                new UserResource($this->userRepository->findAll())
-            )
+            UserResource::collection($users)
         );
     }
 }

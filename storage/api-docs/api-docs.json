@@ -123,7 +123,8 @@
                         "name": "id",
                         "in": "path",
                         "description": "User ID",
-                        "required": true
+                        "required": true,
+                        "example": 1
                     }
                 ],
                 "responses": {
@@ -290,13 +291,13 @@
                     },
                     "created_at": {
                         "description": "Date of Creation",
-                        "type": "dateTime",
-                        "example": "2025-05-25"
+                        "type": "string",
+                        "example": "2025-05-25 17:14:30"
                     },
                     "updated_at": {
                         "description": "Date of Update",
-                        "type": "dateTime",
-                        "example": "2025-05-25"
+                        "type": "string",
+                        "example": "2025-05-25 17:14:30"
                     }
                 },
                 "type": "object"

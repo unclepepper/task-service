@@ -14,7 +14,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             \App\Repositories\UserRepository\UserRepositoryInterface::class,
-            \App\Repositories\UserRepository\UserRepository::class
+            \App\Repositories\UserRepository\UserRepository::class,
+        );
+
+        $this->app->bind(
+            \App\Service\User\UserValidationRulesServiceInterface::class,
+            \App\Service\User\UserValidationRulesService::class,
         );
     }
 

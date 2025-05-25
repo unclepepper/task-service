@@ -8,8 +8,10 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository\UserRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes\Get;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\Response;
@@ -43,9 +45,17 @@ class CurrentController extends Controller
 
     public function current(Request $request): JsonResponse
     {
-        $currentUser = $request->user();
+        $currentUser = Auth::user();
 
-        $user = $this->userRepository->getById($currentUser->id);
+        if (!$currentUser) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        try {
+            $user = $this->userRepository->getByIdOrFail($currentUser->id);
+        } catch (ModelNotFoundException) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
         return response()->json(new UserResource($user));
     }

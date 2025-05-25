@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Repositories\UserRepository\UserRepository;
 use App\Models\User;
@@ -16,9 +18,10 @@ class UserRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = new UserRepository();
+        $this->userRepository = new UserRepository(new User());
     }
 
+    #[Test]
     public function test_create_user()
     {
         $data = [
@@ -35,16 +38,31 @@ class UserRepositoryTest extends TestCase
         $this->assertTrue(\Hash::check($data['password'], $user->password));
     }
 
-    public function test_get_by_id()
+
+    #[Test]
+    public function test_get_user_by_id()
     {
+        // Создаем пользователя в базе данных
         $user = User::factory()->create();
 
-        $foundUser = $this->userRepository->getById($user->id);
+        // Используем репозиторий для получения пользователя по ID
+        $foundUser = $this->userRepository->getByIdOrFail($user->id);
 
-        $this->assertNotNull($foundUser);
+        // Проверяем, что найденный пользователь совпадает с созданным
+        $this->assertInstanceOf(User::class, $foundUser);
         $this->assertEquals($user->id, $foundUser->id);
     }
 
+   #[Test]
+    public function test_exception_when_user_not_found()
+    {
+        $this->expectException(ModelNotFoundException::class);
+
+        // Попытка найти несуществующего пользователя
+        $this->userRepository->getByIdOrFail(99999);
+    }
+
+    #[Test]
     public function test_get_by_email()
     {
         $user = User::factory()->create(['email' => 'unique@example.com']);
@@ -55,6 +73,7 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals($user->id, $foundUser->id);
     }
 
+    #[Test]
     public function test_find_all()
     {
         User::factory()->count(3)->create();
@@ -64,6 +83,7 @@ class UserRepositoryTest extends TestCase
         $this->assertCount(3, $users);
     }
 
+    #[Test]
     public function test_update_user()
     {
         $user = User::factory()->create(['name' => 'Old Name']);
@@ -77,6 +97,7 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals('New Name', $freshUser->name);
     }
 
+    #[Test]
     public function test_delete_user()
     {
         $user = User::factory()->create();

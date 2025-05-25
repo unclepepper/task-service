@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuthResource;
 use App\Repositories\UserRepository\UserRepository;
+use App\Service\User\UserValidationRulesServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use OpenApi\Attributes\JsonContent;
@@ -44,18 +45,13 @@ class RegisterController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository,
+        private readonly UserValidationRulesServiceInterface $userValidationRulesService,
     ) {}
 
 
     public function register(Request $request): JsonResponse
     {
-
-        $data = $request->validate([
-            'name' => 'required|string|required|max:50',
-            'email' => 'required|string|email|required|max:50|unique:users',
-            'password' => 'required|string|required|min:3',
-        ]);
-
+        $data = $this->userValidationRulesService->getRegisterRules($request);
 
         if(null !== $this->userRepository->getByEmail($data['email'])){
             return response()->json(["message" => "User already exists"], 400);
