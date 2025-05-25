@@ -8,11 +8,14 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository\UserRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes\Parameter;
+use OpenApi\Attributes\Patch;
+use OpenApi\Attributes\Response;
 
 
 class EditController extends Controller
@@ -25,6 +28,31 @@ class EditController extends Controller
     /**
      * @throws ValidationException
      */
+    #[Patch(
+        path: '/api/users/{id}',
+        description: 'Edit users',
+        summary: 'Edit users',
+        security: [['bearer_token' => []]],
+        tags: ['User'],
+        parameters: [
+            new Parameter(
+                name: 'id',
+                description: 'User ID',
+                in: 'path',
+                required: true,
+            )
+        ],
+        responses: [
+            new Response(
+                response: 200,
+                description: 'Edit users',
+                content: new JsonContent(
+                    ref: '#/components/schemas/UserResource',
+                )
+            )
+        ]
+
+    )]
     public function edit(Request $request): JsonResponse
     {
         $user = $request->user();

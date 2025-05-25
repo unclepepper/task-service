@@ -11,6 +11,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes\Post;
+use OpenApi\Attributes\RequestBody;
+use OpenApi\Attributes\Response;
 
 class LoginController extends Controller
 {
@@ -23,6 +27,29 @@ class LoginController extends Controller
     /**
      * @throws ValidationException
      */
+    #[Post(
+        path: '/api/login',
+        description: 'Get Bearer token',
+        summary: 'Login user',
+        requestBody: new RequestBody(
+            description: 'Login request',
+            content:
+            new JsonContent(
+                ref: '#/components/schemas/LoginRequest',
+            )
+        ),
+        tags: ['Authorization'],
+        responses: [
+            new Response(
+                response: 200,
+                description: 'Get Bearer token',
+                content: new JsonContent(
+                    ref: '#/components/schemas/AuthResource',
+                )
+            )
+        ],
+
+    )]
     public function login(Request $request): JsonResponse
     {
         $data = $request->validate([

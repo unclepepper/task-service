@@ -13,6 +13,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use OpenApi\Attributes\Get;
+use OpenApi\Attributes\Items;
+use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes\Patch;
+use OpenApi\Attributes\Response;
 
 
 class IndexController extends Controller
@@ -21,6 +26,27 @@ class IndexController extends Controller
         private readonly UserRepository $userRepository,
     ) {}
 
+
+    #[Get(
+        path: '/api/users',
+        description: 'Get collection of users',
+        summary: 'Get collection of users',
+        security: [['bearer_token' => []]],
+        tags: ['User'],
+        responses: [
+            new Response(
+                response: 200,
+                description: 'Get collection of users',
+                content: new JsonContent(
+                    type: 'array',
+                    items: new Items(
+                        ref: '#/components/schemas/UserResource',
+                    )
+                )
+            )
+        ]
+
+    )]
     public function index(): JsonResponse
     {
         return response()->json(

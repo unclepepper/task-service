@@ -1,0 +1,283 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api SQ Systems",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authorization"
+                ],
+                "summary": "Login user",
+                "description": "Get Bearer token",
+                "operationId": "3673edffcdc18c06ac5aef5e2219d774",
+                "requestBody": {
+                    "description": "Login request",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Get Bearer token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authorization"
+                ],
+                "summary": "Create new user",
+                "description": "Registration new user",
+                "operationId": "748a1acc92fb3e56f8f6ace55b5a9d24",
+                "requestBody": {
+                    "description": "Registration request",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Create new user and get bearer token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/current": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get information of user",
+                "description": "Current user information",
+                "operationId": "cf4106a37b3e07d5781c829eabe0c414",
+                "responses": {
+                    "200": {
+                        "description": "Get information of user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get collection of users",
+                "description": "Get collection of users",
+                "operationId": "6751f054caf3e6bb65a46f391538f7d1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Edit users",
+                "description": "Edit users",
+                "operationId": "87d171937b4c7ce78f6892867c0b182d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Edit users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get collection of users",
+                "description": "Get collection of users",
+                "operationId": "f8982df6294d7d636d492f48050ec3fc",
+                "responses": {
+                    "200": {
+                        "description": "Get collection of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserResource"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "title": "LoginRequest",
+                "description": "Authorization request",
+                "properties": {
+                    "email": {
+                        "description": "User Email",
+                        "type": "string",
+                        "example": "user@test.com"
+                    },
+                    "password": {
+                        "description": "User password",
+                        "type": "string",
+                        "example": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "RegisterRequest": {
+                "title": "RegisterRequest",
+                "description": "Registration request",
+                "properties": {
+                    "name": {
+                        "description": "User Name",
+                        "type": "string",
+                        "example": "Ivan"
+                    },
+                    "email": {
+                        "description": "User Email",
+                        "type": "string",
+                        "example": "user@test.com"
+                    },
+                    "password": {
+                        "description": "User password",
+                        "type": "string",
+                        "example": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "AuthResource": {
+                "title": "UserResource",
+                "description": "Authorization",
+                "properties": {
+                    "token": {
+                        "description": "Authorization token",
+                        "type": "string",
+                        "example": "38|MaXb2t7AYhK5w6r1GpSpJPRYQEHaNZP7vBSIPWjt98361465"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "title": "UserResource",
+                "description": "User",
+                "properties": {
+                    "id": {
+                        "description": "User ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "User Name",
+                        "type": "string",
+                        "example": "Ivan"
+                    },
+                    "email": {
+                        "description": "User Email",
+                        "type": "string",
+                        "example": "user@test.com"
+                    },
+                    "created_at": {
+                        "description": "Date of Creation",
+                        "type": "dateTime",
+                        "example": "2025-05-25"
+                    },
+                    "updated_at": {
+                        "description": "Date of Update",
+                        "type": "dateTime",
+                        "example": "2025-05-25"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authorization",
+            "description": "Authorization"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        }
+    ]
+}

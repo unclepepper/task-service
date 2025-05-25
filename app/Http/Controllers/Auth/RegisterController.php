@@ -9,8 +9,12 @@ use App\Http\Resources\AuthResource;
 use App\Repositories\UserRepository\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use OpenApi\Attributes\JsonContent;
+use OpenApi\Attributes\Post;
+use OpenApi\Attributes\Property;
+use OpenApi\Attributes\RequestBody;
+use OpenApi\Attributes\Response;
+
 
 class RegisterController extends Controller
 {
@@ -19,6 +23,29 @@ class RegisterController extends Controller
     ) {}
 
 
+    #[Post(
+        path: '/api/register',
+        description: 'Registration new user',
+        summary: 'Create new user',
+        requestBody: new RequestBody(
+            description: 'Registration request',
+            content:
+            new JsonContent(
+                ref: '#/components/schemas/RegisterRequest',
+            )
+        ),
+        tags: ['Authorization'],
+        responses: [
+            new Response(
+                response: 201,
+                description: 'Create new user and get bearer token',
+                content: new JsonContent(
+                    ref: '#/components/schemas/AuthResource',
+                )
+            )
+        ],
+
+    )]
     public function register(Request $request): JsonResponse
     {
 
