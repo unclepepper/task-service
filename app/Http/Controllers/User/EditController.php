@@ -13,11 +13,37 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use OpenApi\Attributes\JsonContent;
-use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\Patch;
+use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Response;
 
-
+#[Patch(
+    path: '/api/users',
+    description: 'Edit users',
+    summary: 'Edit users',
+    security: [['sanctum' => []]],
+    requestBody: new RequestBody(
+        description: 'Registration request',
+        content:
+        new JsonContent(
+            ref: '#/components/schemas/RegisterRequest',
+        )
+    ),
+    tags: ['Users'],
+    responses: [
+        new Response(
+            response: 200,
+            description: 'Edit users',
+            content: new JsonContent(
+                ref: '#/components/schemas/UserResource',
+            )
+        ),
+        new Response(
+            response: 401,
+            description: 'Error: Unauthorized',
+        ),
+    ]
+)]
 class EditController extends Controller
 {
     public function __construct(
@@ -28,31 +54,6 @@ class EditController extends Controller
     /**
      * @throws ValidationException
      */
-    #[Patch(
-        path: '/api/users/{id}',
-        description: 'Edit users',
-        summary: 'Edit users',
-        security: [['bearer_token' => []]],
-        tags: ['User'],
-        parameters: [
-            new Parameter(
-                name: 'id',
-                description: 'User ID',
-                in: 'path',
-                required: true,
-            )
-        ],
-        responses: [
-            new Response(
-                response: 200,
-                description: 'Edit users',
-                content: new JsonContent(
-                    ref: '#/components/schemas/UserResource',
-                )
-            )
-        ]
-
-    )]
     public function edit(Request $request): JsonResponse
     {
         $user = $request->user();

@@ -16,6 +16,34 @@ use OpenApi\Attributes\Post;
 use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\Response;
 
+
+#[Post(
+    path: '/api/login',
+    description: 'Get Bearer token',
+    summary: 'Login user',
+    requestBody: new RequestBody(
+        description: 'Login request',
+        content:
+        new JsonContent(
+            ref: '#/components/schemas/LoginRequest',
+        )
+    ),
+    tags: ['Authentication'],
+    responses: [
+        new Response(
+            response: 200,
+            description: 'Get Bearer token',
+            content: new JsonContent(
+                ref: '#/components/schemas/AuthResource',
+            )
+        ),
+        new Response(
+            response: 422,
+            description: 'Error: Unprocessable Entity',
+        )
+    ],
+
+)]
 class LoginController extends Controller
 {
     public function __construct(
@@ -23,38 +51,14 @@ class LoginController extends Controller
     ) {}
 
 
-
     /**
      * @throws ValidationException
      */
-    #[Post(
-        path: '/api/login',
-        description: 'Get Bearer token',
-        summary: 'Login user',
-        requestBody: new RequestBody(
-            description: 'Login request',
-            content:
-            new JsonContent(
-                ref: '#/components/schemas/LoginRequest',
-            )
-        ),
-        tags: ['Authorization'],
-        responses: [
-            new Response(
-                response: 200,
-                description: 'Get Bearer token',
-                content: new JsonContent(
-                    ref: '#/components/schemas/AuthResource',
-                )
-            )
-        ],
-
-    )]
     public function login(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+            'email' => 'required|string|email|max:50|',
+            'password' => 'required|string|required|min:3',
         ]);
 
         $user = $this->userRepository->getByEmail($data['email']);
@@ -71,5 +75,4 @@ class LoginController extends Controller
 
         return response()->json( new AuthResource($token));
     }
-
 }

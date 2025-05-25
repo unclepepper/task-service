@@ -7,18 +7,41 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository\UserRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use OpenApi\Attributes\Delete;
-use OpenApi\Attributes\Get;
-use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\Response;
 
-
+#[Delete(
+    path: '/api/users/{id}',
+    description: 'Get collection of users',
+    summary: 'Get collection of users',
+    security: [['sanctum' => []]],
+    tags: ['Users'],
+    parameters: [
+        new Parameter(
+            name: 'id',
+            description: 'User ID',
+            in: 'path',
+            required: true,
+        )
+    ],
+    responses: [
+        new Response(
+            response: 204,
+            description: 'User deleted',
+            content: null
+        ),
+        new Response(
+            response: 404,
+            description: 'User not found',
+        ),
+        new Response(
+            response: 500,
+            description: 'Error: Internal Server Error',
+        )
+    ]
+)]
 class DeleteController extends Controller
 {
     public function __construct(
@@ -26,29 +49,6 @@ class DeleteController extends Controller
     ) {}
 
 
-    #[Delete(
-        path: '/api/users/{id}',
-        description: 'Get collection of users',
-        summary: 'Get collection of users',
-//        security: [['bearer_token' => []]],
-        tags: ['User'],
-        parameters: [
-            new Parameter(
-                name: 'id',
-                description: 'User ID',
-                in: 'path',
-                required: true,
-            )
-        ],
-        responses: [
-            new Response(
-                response: 204,
-                description: 'User deleted',
-                content: null
-            )
-        ]
-
-    )]
     public function delete(int $id): JsonResponse
     {
         $user = $this->userRepository->getById($id);
@@ -59,7 +59,7 @@ class DeleteController extends Controller
 
         $this->userRepository->delete($user);
 
-        return response()->json(['message' => sprintf('The user id= %d was successfully deleted', $id)]);
+        return response()->json(null,204);
     }
 
 }

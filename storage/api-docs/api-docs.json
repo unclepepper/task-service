@@ -2,17 +2,23 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Api SQ Systems",
-        "version": "1.0"
+        "description": "Get the API SQ Systems",
+        "version": "TEST VERSION"
     },
+    "servers": [
+        {
+            "url": "http://localhost"
+        }
+    ],
     "paths": {
         "/api/login": {
             "post": {
                 "tags": [
-                    "Authorization"
+                    "Authentication"
                 ],
                 "summary": "Login user",
                 "description": "Get Bearer token",
-                "operationId": "3673edffcdc18c06ac5aef5e2219d774",
+                "operationId": "2e9c317eea06b322356cd346eb0e29fb",
                 "requestBody": {
                     "description": "Login request",
                     "content": {
@@ -33,6 +39,9 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "description": "Error: Unprocessable Entity"
                     }
                 }
             }
@@ -40,11 +49,10 @@
         "/api/register": {
             "post": {
                 "tags": [
-                    "Authorization"
+                    "Authentication"
                 ],
-                "summary": "Create new user",
-                "description": "Registration new user",
-                "operationId": "748a1acc92fb3e56f8f6ace55b5a9d24",
+                "summary": "Registration new user",
+                "operationId": "7d8c5938c0f8c4cee857ce8e9a12d028",
                 "requestBody": {
                     "description": "Registration request",
                     "content": {
@@ -65,18 +73,21 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "description": "Error: Unprocessable Entity"
                     }
                 }
             }
         },
-        "/api/user/current": {
+        "/api/users/current": {
             "get": {
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "summary": "Get information of user",
                 "description": "Current user information",
-                "operationId": "cf4106a37b3e07d5781c829eabe0c414",
+                "operationId": "b1488f98ef69716cb59cca62dc0578f0",
                 "responses": {
                     "200": {
                         "description": "Get information of user",
@@ -87,11 +98,14 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized"
                     }
                 },
                 "security": [
                     {
-                        "bearer_token": []
+                        "sanctum": []
                     }
                 ]
             }
@@ -99,11 +113,11 @@
         "/api/users/{id}": {
             "delete": {
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "summary": "Get collection of users",
                 "description": "Get collection of users",
-                "operationId": "6751f054caf3e6bb65a46f391538f7d1",
+                "operationId": "63c211a82841480575d423406f3554d8",
                 "parameters": [
                     {
                         "name": "id",
@@ -115,39 +129,17 @@
                 "responses": {
                     "204": {
                         "description": "User deleted"
-                    }
-                }
-            },
-            "patch": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "Edit users",
-                "description": "Edit users",
-                "operationId": "87d171937b4c7ce78f6892867c0b182d",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User ID",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Edit users",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/UserResource"
-                                }
-                            }
-                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Error: Internal Server Error"
                     }
                 },
                 "security": [
                     {
-                        "bearer_token": []
+                        "sanctum": []
                     }
                 ]
             }
@@ -155,11 +147,11 @@
         "/api/users": {
             "get": {
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "summary": "Get collection of users",
                 "description": "Get collection of users",
-                "operationId": "f8982df6294d7d636d492f48050ec3fc",
+                "operationId": "3726d86f8e220eecebc640a2d98fd22f",
                 "responses": {
                     "200": {
                         "description": "Get collection of users",
@@ -173,11 +165,52 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized"
                     }
                 },
                 "security": [
                     {
-                        "bearer_token": []
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Edit users",
+                "description": "Edit users",
+                "operationId": "a928bfa10780d8115bd97093521d55bd",
+                "requestBody": {
+                    "description": "Registration request",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Edit users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
                     }
                 ]
             }
@@ -268,16 +301,24 @@
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
         }
     },
     "tags": [
         {
-            "name": "Authorization",
-            "description": "Authorization"
+            "name": "Authentication",
+            "description": "Authentication"
         },
         {
-            "name": "User",
-            "description": "User"
+            "name": "Users",
+            "description": "Users"
         }
     ]
 }

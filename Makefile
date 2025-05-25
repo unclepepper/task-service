@@ -18,8 +18,7 @@ help: ## Список команд
 .PHONY: help
 
 
-init: generate-env up ci  help ## Инициализация проекта, поднятие контейнеров, установка прав
-#init: generate-env up ci right m-up test help
+init: generate-env up ci  right m-up test help ## Инициализация проекта, поднятие контейнеров, установка прав
 
 restart: down up ## Перезапуск контейнеров
 
@@ -80,4 +79,7 @@ right: ## Установка прав
 test: ## Запуск автотестов
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} php artisan test
 
-.PHONY: cc right test
+sw-gen:
+	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} php artisan l5-swagger:generate
+
+.PHONY: cc right test sw-gen
