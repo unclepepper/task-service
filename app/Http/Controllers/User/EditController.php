@@ -8,8 +8,11 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository\UserRepository;
+use App\Service\User\UserValidationRulesServiceInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use OpenApi\Attributes\JsonContent;
@@ -19,21 +22,21 @@ use OpenApi\Attributes\Response;
 
 #[Patch(
     path: '/api/users',
-    description: 'Edit users',
-    summary: 'Edit users',
+    description: 'Update user',
+    summary: 'Update user',
     security: [['sanctum' => []]],
     requestBody: new RequestBody(
         description: 'Registration request',
         content:
         new JsonContent(
-            ref: '#/components/schemas/RegisterRequest',
+            ref: '#/components/schemas/UserRequest',
         )
     ),
     tags: ['Users'],
     responses: [
         new Response(
             response: 200,
-            description: 'Edit users',
+            description: 'Success',
             content: new JsonContent(
                 ref: '#/components/schemas/UserResource',
             )
@@ -48,6 +51,7 @@ class EditController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository,
+        private readonly UserValidationRulesServiceInterface $userValidationRulesService,
     ) {}
 
 
@@ -56,20 +60,23 @@ class EditController extends Controller
      */
     public function edit(Request $request): JsonResponse
     {
-        $user = $request->user();
+        $currentUser = Auth::user();
 
-        $user = $this->userRepository->getById($user->id);
+        if (!$currentUser) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
-        if (null === $user) {
+        try {
+            $user = $this->userRepository->getByIdOrFail($currentUser->id);
+        } catch (ModelNotFoundException) {
             return response()->json(['message' => 'User not found'], 404);
         }
 
         $data = $request->only(['name', 'email', 'password']);
 
-        /** Генерация правил валидации */
-        $validationRules = $this->getValidationRules($data);
+        /** Получение правил валидации через сервис */
+        $validationRules = $this->userValidationRulesService->getEditRules($data);
 
-        /** Валидация данных */
         $validator = Validator::make($data, $validationRules);
 
         if($validator->fails())
@@ -83,25 +90,4 @@ class EditController extends Controller
 
     }
 
-    private function getValidationRules(array $data): array
-    {
-        $rules = [];
-
-        if(isset($data['email']))
-        {
-            $rules['email'] = 'required|string|email';
-        }
-
-        if(isset($data['name']))
-        {
-            $rules['name'] = 'required|string';
-        }
-
-        if(isset($data['password']))
-        {
-            $rules['password'] = 'required|string';
-        }
-
-        return $rules;
-    }
 }

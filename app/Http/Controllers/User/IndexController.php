@@ -23,7 +23,7 @@ use OpenApi\Attributes\Response;
     responses: [
         new Response(
             response: 200,
-            description: 'Get collection of users',
+            description: 'Success',
             content: new JsonContent(
                 type: 'array',
                 items: new Items(
@@ -46,10 +46,10 @@ class IndexController extends Controller
 
     public function index(): JsonResponse
     {
+        $users = $this->userRepository->findAll();
+
         return response()->json(
-            UserResource::collection(
-                new UserResource($this->userRepository->findAll())
-            )
+            UserResource::collection($users)
         );
     }
 }

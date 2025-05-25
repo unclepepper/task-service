@@ -35,14 +35,14 @@ use OpenApi\Attributes\Schema;
         new Property(
             property: 'created_at',
             description: 'Date of Creation',
-            type: 'dateTime',
-            example: '2025-05-25'
+            type: 'string',
+            example: '2025-05-25 17:14:30'
         ),
         new Property(
             property: 'updated_at',
             description: 'Date of Update',
-            type: 'dateTime',
-            example: '2025-05-25'
+            type: 'string',
+            example: '2025-05-25 17:14:30'
         ),
     ]
 )]
@@ -54,8 +54,8 @@ class UserResource extends JsonResource
             'id'            => $this->resource->id,
             'name'          => $this->resource->name,
             'email'         => $this->resource->email,
-            'created_at'    => $this->resource->created_at,
-            'updated_at'    => $this->resource->updated_at,
+            'created_at'    => $this->resource->created_at?->format('Y-m-d H:i:s'),
+            'updated_at'    => $this->resource->updated_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

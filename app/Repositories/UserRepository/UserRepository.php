@@ -6,10 +6,15 @@ namespace App\Repositories\UserRepository;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
+    public function __construct(
+        private readonly User $user
+    )
+    {}
 
     public function create(array $data): User
     {
@@ -20,9 +25,14 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
-    public function getById(int $id): ?User
+
+    public function getByIdOrFail(int $id): User
     {
-        return User::where('id', $id)->first();
+        $user = $this->user->find($id);
+        if (!$user) {
+            throw new ModelNotFoundException("User not found");
+        }
+        return $user;
     }
 
     public function getByEmail(string $email): ?User

@@ -7,7 +7,7 @@ use OpenApi\Attributes\Property;
 use OpenApi\Attributes\Schema;
 
 #[Schema(
-    title: 'RegisterRequest',
+    title: 'UserRequest',
     description: 'Registration request',
     properties: [
         new Property(
@@ -30,14 +30,14 @@ use OpenApi\Attributes\Schema;
         ),
     ]
 )]
-class RegisterRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**

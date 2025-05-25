@@ -7,6 +7,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository\UserRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes\Delete;
 use OpenApi\Attributes\Parameter;
@@ -14,8 +15,8 @@ use OpenApi\Attributes\Response;
 
 #[Delete(
     path: '/api/users/{id}',
-    description: 'Get collection of users',
-    summary: 'Get collection of users',
+    description: 'Deleting a user',
+    summary: 'Deleting a user',
     security: [['sanctum' => []]],
     tags: ['Users'],
     parameters: [
@@ -24,12 +25,13 @@ use OpenApi\Attributes\Response;
             description: 'User ID',
             in: 'path',
             required: true,
+            example: 1
         )
     ],
     responses: [
         new Response(
             response: 204,
-            description: 'User deleted',
+            description: 'Success',
             content: null
         ),
         new Response(
@@ -51,15 +53,15 @@ class DeleteController extends Controller
 
     public function delete(int $id): JsonResponse
     {
-        $user = $this->userRepository->getById($id);
-
-        if (null === $user) {
+        try {
+            $user = $this->userRepository->getByIdOrFail($id);
+        } catch (ModelNotFoundException) {
             return response()->json(['message' => 'User not found'], 404);
         }
 
         $this->userRepository->delete($user);
 
-        return response()->json(null,204);
+        return response()->json(null, 204);
     }
 
 }

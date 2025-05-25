@@ -31,7 +31,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Get Bearer token",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -58,14 +58,14 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RegisterRequest"
+                                "$ref": "#/components/schemas/UserRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Create new user and get bearer token",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -80,17 +80,17 @@
                 }
             }
         },
-        "/api/users/current": {
+        "/api/user": {
             "get": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Get information of user",
                 "description": "Current user information",
-                "operationId": "b1488f98ef69716cb59cca62dc0578f0",
+                "operationId": "40a3b039a569fac2ba27e847ad38d515",
                 "responses": {
                     "200": {
-                        "description": "Get information of user",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -115,20 +115,21 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get collection of users",
-                "description": "Get collection of users",
+                "summary": "Deleting a user",
+                "description": "Deleting a user",
                 "operationId": "63c211a82841480575d423406f3554d8",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "description": "User ID",
-                        "required": true
+                        "required": true,
+                        "example": 1
                     }
                 ],
                 "responses": {
                     "204": {
-                        "description": "User deleted"
+                        "description": "Success"
                     },
                     "404": {
                         "description": "User not found"
@@ -154,7 +155,7 @@
                 "operationId": "3726d86f8e220eecebc640a2d98fd22f",
                 "responses": {
                     "200": {
-                        "description": "Get collection of users",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -180,22 +181,22 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Edit users",
-                "description": "Edit users",
+                "summary": "Update user",
+                "description": "Update user",
                 "operationId": "a928bfa10780d8115bd97093521d55bd",
                 "requestBody": {
                     "description": "Registration request",
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RegisterRequest"
+                                "$ref": "#/components/schemas/UserRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Edit users",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -235,8 +236,8 @@
                 },
                 "type": "object"
             },
-            "RegisterRequest": {
-                "title": "RegisterRequest",
+            "UserRequest": {
+                "title": "UserRequest",
                 "description": "Registration request",
                 "properties": {
                     "name": {
@@ -290,13 +291,13 @@
                     },
                     "created_at": {
                         "description": "Date of Creation",
-                        "type": "dateTime",
-                        "example": "2025-05-25"
+                        "type": "string",
+                        "example": "2025-05-25 17:14:30"
                     },
                     "updated_at": {
                         "description": "Date of Update",
-                        "type": "dateTime",
-                        "example": "2025-05-25"
+                        "type": "string",
+                        "example": "2025-05-25 17:14:30"
                     }
                 },
                 "type": "object"

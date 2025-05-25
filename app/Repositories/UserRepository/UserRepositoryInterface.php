@@ -26,11 +26,12 @@ interface UserRepositoryInterface
      */
     public function getByEmail(string $email): ?User;
 
+
     /**
      * @param int $id
-     * @return User|null
+     * @return User
      */
-    public function getById(int $id): ?User;
+    public function getByIdOrFail(int $id): User;
 
     /**
      * @param User $user

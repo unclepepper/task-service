@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Http\Resources\AuthResource;
 use App\Repositories\UserRepository\UserRepository;
+use App\Service\User\UserValidationRulesServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,7 +34,7 @@ use OpenApi\Attributes\Response;
     responses: [
         new Response(
             response: 200,
-            description: 'Get Bearer token',
+            description: 'Success',
             content: new JsonContent(
                 ref: '#/components/schemas/AuthResource',
             )
@@ -47,25 +49,22 @@ use OpenApi\Attributes\Response;
 class LoginController extends Controller
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserRepository $userRepository
     ) {}
 
 
     /**
      * @throws ValidationException
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'email' => 'required|string|email|max:50|',
-            'password' => 'required|string|required|min:3',
-        ]);
+        $data = $request->validated();
 
         $user = $this->userRepository->getByEmail($data['email']);
 
         if(null === $user || !Hash::check($data['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'email' => ['The provided credentials are incorrect'],
             ]);
         }
 
