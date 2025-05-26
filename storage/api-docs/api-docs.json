@@ -482,6 +482,11 @@
                         "description": "User password",
                         "type": "string",
                         "example": "password"
+                    },
+                    "role": {
+                        "description": "User role",
+                        "type": "integer",
+                        "example": 2
                     }
                 },
                 "type": "object"

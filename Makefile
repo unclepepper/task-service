@@ -18,7 +18,7 @@ help: ## Список команд
 .PHONY: help
 
 
-init: generate-env up ci  right m-up test help ## Инициализация проекта, поднятие контейнеров, установка прав
+init: generate-env up ci  right m-up test right help ## Инициализация проекта, поднятие контейнеров, установка прав
 
 restart: down up ## Перезапуск контейнеров
 

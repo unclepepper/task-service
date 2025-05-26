@@ -18,10 +18,17 @@ class UserRepository implements UserRepositoryInterface
 
     public function create(array $data): User
     {
+        $role = 1;
+
+        if($data['role']){
+            $role = $data['role'];
+        }
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => $role,
         ]);
     }
 

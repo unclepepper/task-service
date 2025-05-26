@@ -30,6 +30,13 @@ use OpenApi\Attributes\Schema;
             type: 'string',
             example: 'password',
         ),
+        new Property(
+            property: 'role',
+            description: 'User role',
+            type: 'integer',
+            example: 2,
+        ),
+
     ]
 )]
 class UserRequest extends FormRequest
@@ -50,9 +57,10 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|required|max:50',
-            'email' => 'required|string|email|required|max:50|unique:users',
-            'password' => 'required|string|required|min:3',
+            'name'      => 'required|string|required|max:50',
+            'email'     => 'required|string|email|required|max:50|unique:users',
+            'password'  => 'required|string|required|min:3',
+            'role'      => 'nullable|integer',
         ];
     }
 }
