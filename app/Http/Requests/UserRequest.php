@@ -30,13 +30,6 @@ use OpenApi\Attributes\Schema;
             type: 'string',
             example: 'password',
         ),
-        new Property(
-            property: 'role',
-            description: 'User role',
-            type: 'string',
-            example: 'admin',
-        ),
-
     ]
 )]
 class UserRequest extends FormRequest
