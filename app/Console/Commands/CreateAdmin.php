@@ -38,25 +38,20 @@ class CreateAdmin extends Command
      */
     public function handle()
     {
-        // Запрос данных у пользователя
-        $name = 'admin';
-        $email = 'admin@admin.com';
-        $password = 'password';
-
-        if (User::where('email', $email)->exists()) {
+        if (User::where('email', self::ADMIN_EMAIL)->exists()) {
             $this->error('Пользователь с таким email уже существует.');
             return 1;
         }
 
-       $user = $this->userRepository->create([
-           'name' => $name,
-           'email' => $email,
-           'password' => bcrypt($password),
-           'role' => User::ROLE_ADMIN,
+       $admin = $this->userRepository->create([
+           'name'       => self::ADMIN_NAME,
+           'email'      => self::ADMIN_EMAIL,
+           'password'   => self::ADMIN_PASSWORD,
+           'role'       => User::ROLE_ADMIN,
        ]);
 
-        $this->info(sprintf('Администратор с именем %s успешно создан!', $user->name));
-        $this->warn(sprintf('Email: %s', $user->email));
+        $this->info(sprintf('Администратор с именем %s успешно создан!', $admin->name));
+        $this->warn(sprintf('Email: %s', $admin->email));
         $this->warn(sprintf('Password: %s', self::ADMIN_PASSWORD));
 
 

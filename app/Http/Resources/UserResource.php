@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources;
 
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes\Property;
@@ -33,6 +34,13 @@ use OpenApi\Attributes\Schema;
             example: 'user@test.com'
         ),
         new Property(
+            property: 'role',
+            description: 'User role',
+            type: 'string',
+            enum: ['admin', 'user'],
+            example: 'admin'
+        ),
+        new Property(
             property: 'created_at',
             description: 'Date of Creation',
             type: 'string',
@@ -54,6 +62,7 @@ class UserResource extends JsonResource
             'id'            => $this->id,
             'name'          => $this->name,
             'email'         => $this->email,
+            'role'          => User::ROLES_REVERSE[$this->role],
             'created_at'    => $this->created_at?->format('Y-m-d H:i:s'),
             'updated_at'    => $this->updated_at?->format('Y-m-d H:i:s'),
         ];

@@ -624,6 +624,15 @@
                         "type": "string",
                         "example": "user@test.com"
                     },
+                    "role": {
+                        "description": "User role",
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "user"
+                        ],
+                        "example": "admin"
+                    },
                     "created_at": {
                         "description": "Date of Creation",
                         "type": "string",

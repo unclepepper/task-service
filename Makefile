@@ -79,10 +79,10 @@ right: ## Установка прав
 test: ## Запуск автотестов
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} php artisan test
 
-sw-gen:
+sw-gen: ## Генерация сваггера
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} php artisan l5-swagger:generate
 
-admin:
+admin: ## Создание пользователя с правами администратора
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} php artisan user:create-admin
 
 .PHONY: cc right test sw-gen
