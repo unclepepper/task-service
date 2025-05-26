@@ -10,7 +10,6 @@ use App\Http\Resources\UserResource;
 use App\Repositories\UserRepository\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes\Get;
 use OpenApi\Attributes\JsonContent;
@@ -18,7 +17,7 @@ use OpenApi\Attributes\Response;
 
 
 #[Get(
-    path: '/api/users/current',
+    path: '/api/user',
     description: 'Current user information',
     summary: 'Get information of user',
     security: [['sanctum' => []]],
@@ -26,7 +25,7 @@ use OpenApi\Attributes\Response;
     responses: [
         new Response(
             response: 200,
-            description: 'Get information of user',
+            description: 'Success',
             content: new JsonContent(
                 ref: '#/components/schemas/UserResource',
             )
@@ -43,7 +42,7 @@ class CurrentController extends Controller
         private readonly UserRepository $userRepository,
     ) {}
 
-    public function current(Request $request): JsonResponse
+    public function current(): JsonResponse
     {
         $currentUser = Auth::user();
 

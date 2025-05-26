@@ -22,21 +22,21 @@ use OpenApi\Attributes\Response;
 
 #[Patch(
     path: '/api/users',
-    description: 'Edit users',
-    summary: 'Edit users',
+    description: 'Update user',
+    summary: 'Update user',
     security: [['sanctum' => []]],
     requestBody: new RequestBody(
         description: 'Registration request',
         content:
         new JsonContent(
-            ref: '#/components/schemas/RegisterRequest',
+            ref: '#/components/schemas/UserRequest',
         )
     ),
     tags: ['Users'],
     responses: [
         new Response(
             response: 200,
-            description: 'Edit users',
+            description: 'Success',
             content: new JsonContent(
                 ref: '#/components/schemas/UserResource',
             )

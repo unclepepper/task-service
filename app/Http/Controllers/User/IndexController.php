@@ -23,7 +23,7 @@ use OpenApi\Attributes\Response;
     responses: [
         new Response(
             response: 200,
-            description: 'Get collection of users',
+            description: 'Success',
             content: new JsonContent(
                 type: 'array',
                 items: new Items(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Http\Resources\AuthResource;
 use App\Repositories\UserRepository\UserRepository;
 use App\Service\User\UserValidationRulesServiceInterface;
@@ -33,7 +34,7 @@ use OpenApi\Attributes\Response;
     responses: [
         new Response(
             response: 200,
-            description: 'Get Bearer token',
+            description: 'Success',
             content: new JsonContent(
                 ref: '#/components/schemas/AuthResource',
             )
@@ -48,17 +49,16 @@ use OpenApi\Attributes\Response;
 class LoginController extends Controller
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly UserValidationRulesServiceInterface $userValidationRulesService,
+        private readonly UserRepository $userRepository
     ) {}
 
 
     /**
      * @throws ValidationException
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $data = $this->userValidationRulesService->getLoginRules($request);
+        $data = $request->validated();
 
         $user = $this->userRepository->getByEmail($data['email']);
 

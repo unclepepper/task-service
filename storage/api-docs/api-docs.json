@@ -31,7 +31,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Get Bearer token",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -58,14 +58,14 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RegisterRequest"
+                                "$ref": "#/components/schemas/UserRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Create new user and get bearer token",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -80,17 +80,218 @@
                 }
             }
         },
-        "/api/users/current": {
+        "/api/tasks/{id}": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Get information of task",
+                "description": "Task information",
+                "operationId": "167ae1a943767900cd5a2d8697aaf195",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Task Id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Deleting a task",
+                "description": "Deleting a task",
+                "operationId": "0ac6bb465f60b8c4651e62a3a3f92720",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Task Id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Task not found"
+                    },
+                    "500": {
+                        "description": "Error: Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Update Task",
+                "description": "Update Task",
+                "operationId": "fd306bb1a7227e68fef8405b68ba10c5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Task Id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "description": "Registration request",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TaskRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/tasks": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Get collection of tasks",
+                "description": "Get collection of tasks",
+                "operationId": "728ebc05cac3403975a55ed50e9cb991",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Task Id",
+                        "required": false,
+                        "example": "in_progress"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TaskResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Create Task",
+                "operationId": "c706bbaadc0dbd1638391fbe78869c90",
+                "requestBody": {
+                    "description": "Task request",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TaskRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TaskResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error: Unprocessable Entity"
+                    },
+                    "401": {
+                        "description": "Error: Error: Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/user": {
             "get": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Get information of user",
                 "description": "Current user information",
-                "operationId": "b1488f98ef69716cb59cca62dc0578f0",
+                "operationId": "40a3b039a569fac2ba27e847ad38d515",
                 "responses": {
                     "200": {
-                        "description": "Get information of user",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -115,21 +316,21 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get collection of users",
-                "description": "Get collection of users",
+                "summary": "Deleting a user",
+                "description": "Deleting a user",
                 "operationId": "63c211a82841480575d423406f3554d8",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "User ID",
+                        "description": "User Id",
                         "required": true,
                         "example": 1
                     }
                 ],
                 "responses": {
                     "204": {
-                        "description": "User deleted"
+                        "description": "Success"
                     },
                     "404": {
                         "description": "User not found"
@@ -155,7 +356,7 @@
                 "operationId": "3726d86f8e220eecebc640a2d98fd22f",
                 "responses": {
                     "200": {
-                        "description": "Get collection of users",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -181,22 +382,22 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Edit users",
-                "description": "Edit users",
+                "summary": "Update user",
+                "description": "Update user",
                 "operationId": "a928bfa10780d8115bd97093521d55bd",
                 "requestBody": {
                     "description": "Registration request",
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RegisterRequest"
+                                "$ref": "#/components/schemas/UserRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Edit users",
+                        "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -236,8 +437,35 @@
                 },
                 "type": "object"
             },
-            "RegisterRequest": {
-                "title": "RegisterRequest",
+            "TaskRequest": {
+                "title": "TaskRequest",
+                "description": "Task request",
+                "properties": {
+                    "title": {
+                        "description": "Task title",
+                        "type": "string",
+                        "example": "Title"
+                    },
+                    "description": {
+                        "description": "Task Description",
+                        "type": "string",
+                        "example": "Description of task"
+                    },
+                    "status": {
+                        "description": "Task Status",
+                        "type": "enum",
+                        "enum": [
+                            "pending",
+                            "in_progress",
+                            "completed"
+                        ],
+                        "example": "pending"
+                    }
+                },
+                "type": "object"
+            },
+            "UserRequest": {
+                "title": "UserRequest",
                 "description": "Registration request",
                 "properties": {
                     "name": {
@@ -266,6 +494,43 @@
                         "description": "Authorization token",
                         "type": "string",
                         "example": "38|MaXb2t7AYhK5w6r1GpSpJPRYQEHaNZP7vBSIPWjt98361465"
+                    }
+                },
+                "type": "object"
+            },
+            "TaskResource": {
+                "title": "TaskResource",
+                "description": "Task",
+                "properties": {
+                    "id": {
+                        "description": "User ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "User Id",
+                        "type": "integer",
+                        "example": 8
+                    },
+                    "title": {
+                        "description": "Task title",
+                        "type": "string",
+                        "example": "To-do"
+                    },
+                    "description": {
+                        "description": "Task description",
+                        "type": "string",
+                        "example": "Description about task"
+                    },
+                    "created_at": {
+                        "description": "Date of Creation",
+                        "type": "string",
+                        "example": "2025-05-25 17:14:30"
+                    },
+                    "updated_at": {
+                        "description": "Date of Update",
+                        "type": "string",
+                        "example": "2025-05-25 17:14:30"
                     }
                 },
                 "type": "object"
@@ -316,6 +581,10 @@
         {
             "name": "Authentication",
             "description": "Authentication"
+        },
+        {
+            "name": "Tasks",
+            "description": "Tasks"
         },
         {
             "name": "Users",

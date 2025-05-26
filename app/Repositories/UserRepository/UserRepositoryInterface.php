@@ -41,9 +41,9 @@ interface UserRepositoryInterface
     public function update(User $user, array $data): User;
 
     /**
-     * @param User $user
+     * @param int $id
      * @return bool
      */
-    public function delete(User $user): bool;
+    public function delete(int $id): bool;
 
 }

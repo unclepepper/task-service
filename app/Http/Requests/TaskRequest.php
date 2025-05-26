@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -7,37 +9,39 @@ use OpenApi\Attributes\Property;
 use OpenApi\Attributes\Schema;
 
 #[Schema(
-    title: 'RegisterRequest',
-    description: 'Registration request',
+    title: 'TaskRequest',
+    description: 'Task request',
     properties: [
         new Property(
-            property: 'name',
-            description: 'User Name',
+            property: 'title',
+            description: 'Task title',
             type: 'string',
-            example: 'Ivan',
+            example: 'Title'
         ),
         new Property(
-            property: 'email',
-            description: 'User Email',
+            property: 'description',
+            description: 'Task Description',
             type: 'string',
-            example: 'user@test.com'
+            example: 'Description of task',
         ),
+
         new Property(
-            property: 'password',
-            description: 'User password',
-            type: 'string',
-            example: 'password',
+            property: 'status',
+            description: 'Task Status',
+            type: 'enum',
+            enum: ['pending', 'in_progress', 'completed'],
+            example: 'pending',
         ),
     ]
 )]
-class RegisterRequest extends FormRequest
+class TaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -48,9 +52,9 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|required|max:50',
-            'email' => 'required|string|email|required|max:50|unique:users',
-            'password' => 'required|string|required|min:3',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'required|in:pending,in_progress,completed',
         ];
     }
 }

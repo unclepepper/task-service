@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\AuthResource;
 use App\Repositories\UserRepository\UserRepository;
 use App\Service\User\UserValidationRulesServiceInterface;
@@ -23,14 +24,14 @@ use OpenApi\Attributes\Response;
         description: 'Registration request',
         content:
         new JsonContent(
-            ref: '#/components/schemas/RegisterRequest',
+            ref: '#/components/schemas/UserRequest',
         )
     ),
     tags: ['Authentication'],
     responses: [
         new Response(
             response: 201,
-            description: 'Create new user and get bearer token',
+            description: 'Success',
             content: new JsonContent(
                 ref: '#/components/schemas/AuthResource',
             )
@@ -44,16 +45,15 @@ use OpenApi\Attributes\Response;
 class RegisterController extends Controller
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly UserValidationRulesServiceInterface $userValidationRulesService,
+        private readonly UserRepository $userRepository
     ) {}
 
 
-    public function register(Request $request): JsonResponse
+    public function register(UserRequest $request): JsonResponse
     {
-        $data = $this->userValidationRulesService->getRegisterRules($request);
+        $data = $request->validated();
 
-        if(null !== $this->userRepository->getByEmail($data['email'])){
+        if(null !== $this->userRepository->getByEmail($request['email'])){
             return response()->json(["message" => "User already exists"], 400);
         }
 

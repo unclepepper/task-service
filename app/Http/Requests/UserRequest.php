@@ -9,9 +9,15 @@ use OpenApi\Attributes\Property;
 use OpenApi\Attributes\Schema;
 
 #[Schema(
-    title: 'LoginRequest',
-    description: 'Authorization request',
+    title: 'UserRequest',
+    description: 'Registration request',
     properties: [
+        new Property(
+            property: 'name',
+            description: 'User Name',
+            type: 'string',
+            example: 'Ivan',
+        ),
         new Property(
             property: 'email',
             description: 'User Email',
@@ -26,7 +32,7 @@ use OpenApi\Attributes\Schema;
         ),
     ]
 )]
-class LoginRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -44,7 +50,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email|max:50|',
+            'name' => 'required|string|required|max:50',
+            'email' => 'required|string|email|required|max:50|unique:users',
             'password' => 'required|string|required|min:3',
         ];
     }

@@ -46,7 +46,7 @@ class UserRoleAccessTest extends TestCase
             ->get('/api/users');
 
         $response->assertStatus(403);
-        $response->assertJson(['message' => 'Access denied']);
+        $response->assertJson(['error' => 'Access denied']);
     }
 
     #[Test]
@@ -73,7 +73,7 @@ class UserRoleAccessTest extends TestCase
 
         $response->assertStatus(403);
 
-        $response->assertJson(['message' => 'Access denied']);
+        $response->assertJson(['error' => 'Access denied']);
     }
 }
 

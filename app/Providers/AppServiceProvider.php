@@ -18,8 +18,18 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \App\Repositories\TaskRepository\TaskRepositoryInterface::class,
+            \App\Repositories\TaskRepository\TaskRepository::class,
+        );
+
+        $this->app->bind(
             \App\Service\User\UserValidationRulesServiceInterface::class,
             \App\Service\User\UserValidationRulesService::class,
+        );
+
+        $this->app->bind(
+            \App\Service\Task\TaskValidationRulesServiceInterface::class,
+            \App\Service\Task\TaskValidationRulesService::class,
         );
     }
 

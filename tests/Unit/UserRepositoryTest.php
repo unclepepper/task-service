@@ -102,7 +102,7 @@ class UserRepositoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $result = $this->userRepository->delete($user);
+        $result = $this->userRepository->delete($user->id);
 
         $this->assertTrue($result);
 

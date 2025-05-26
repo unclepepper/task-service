@@ -2,27 +2,26 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\User;
-
+namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepository\UserRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Repositories\TaskRepository\TaskRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes\Delete;
 use OpenApi\Attributes\Parameter;
 use OpenApi\Attributes\Response;
 
+
 #[Delete(
-    path: '/api/users/{id}',
-    description: 'Deleting a user',
-    summary: 'Deleting a user',
+    path: '/api/tasks/{id}',
+    description: 'Deleting a task',
+    summary: 'Deleting a task',
     security: [['sanctum' => []]],
-    tags: ['Users'],
+    tags: ['Tasks'],
     parameters: [
         new Parameter(
             name: 'id',
-            description: 'User Id',
+            description: 'Task Id',
             in: 'path',
             required: true,
             example: 1
@@ -36,7 +35,7 @@ use OpenApi\Attributes\Response;
         ),
         new Response(
             response: 404,
-            description: 'User not found',
+            description: 'Task not found',
         ),
         new Response(
             response: 500,
@@ -46,19 +45,16 @@ use OpenApi\Attributes\Response;
 )]
 class DeleteController extends Controller
 {
-    public function __construct(
-        private readonly UserRepository $userRepository,
-    ) {}
 
+    public function __construct(
+        private readonly TaskRepositoryInterface $taskRepository,
+    ) {}
 
     public function delete(int $id): JsonResponse
     {
-        if ($this->userRepository->delete($id)) {
-            return response()->json(['message' => 'Deleted successfully'], 204);
+        if ($this->taskRepository->delete($id)) {
+            return response()->json(null, 204);
         }
-
-        return response()->json(['message' => 'User not found'], 404);
+        return response()->json(['message' => 'Task not found'], 404);
     }
-
-
 }
