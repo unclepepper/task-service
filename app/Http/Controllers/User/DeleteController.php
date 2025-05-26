@@ -22,7 +22,7 @@ use OpenApi\Attributes\Response;
     parameters: [
         new Parameter(
             name: 'id',
-            description: 'User ID',
+            description: 'User Id',
             in: 'path',
             required: true,
             example: 1

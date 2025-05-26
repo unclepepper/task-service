@@ -16,13 +16,13 @@ use OpenApi\Attributes\Schema;
             property: 'title',
             description: 'Task title',
             type: 'string',
-            example: 'user@test.com'
+            example: 'Title'
         ),
         new Property(
             property: 'description',
             description: 'Task Description',
             type: 'string',
-            example: 'password',
+            example: 'Description of task',
         ),
 
         new Property(
@@ -30,7 +30,7 @@ use OpenApi\Attributes\Schema;
             description: 'Task Status',
             type: 'enum',
             enum: ['pending', 'in_progress', 'completed'],
-            example: 'completed',
+            example: 'pending',
         ),
     ]
 )]

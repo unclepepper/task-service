@@ -9,18 +9,48 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes\Property;
 use OpenApi\Attributes\Schema;
 
-//#[Schema(
-//    title: 'UserResource',
-//    description: 'Authorization',
-//    properties: [
-//        new Property(
-//            property: 'token',
-//            description: 'Authorization token',
-//            type: 'string',
-//            example: '38|MaXb2t7AYhK5w6r1GpSpJPRYQEHaNZP7vBSIPWjt98361465'
-//        )
-//    ]
-//)]
+#[Schema(
+    title: 'TaskResource',
+    description: 'Task',
+    properties: [
+        new Property(
+            property: 'id',
+            description: 'User ID',
+            type: 'integer',
+            example: 1,
+        ),
+        new Property(
+            property: 'user_id',
+            description: 'User Id',
+            type: 'integer',
+            example: 8,
+        ),
+        new Property(
+            property: 'title',
+            description: 'Task title',
+            type: 'string',
+            example: 'To-do',
+        ),
+        new Property(
+            property: 'description',
+            description: 'Task description',
+            type: 'string',
+            example: 'Description about task',
+        ),
+        new Property(
+            property: 'created_at',
+            description: 'Date of Creation',
+            type: 'string',
+            example: '2025-05-25 17:14:30'
+        ),
+        new Property(
+            property: 'updated_at',
+            description: 'Date of Update',
+            type: 'string',
+            example: '2025-05-25 17:14:30'
+        ),
+    ]
+)]
 class TaskResource extends JsonResource
 {
     /**
