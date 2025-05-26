@@ -40,6 +40,8 @@ interface UserRepositoryInterface
      */
     public function update(User $user, array $data): User;
 
+    public function updateRole(User $user, array $data): ?User;
+
     /**
      * @param int $id
      * @return bool

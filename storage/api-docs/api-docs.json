@@ -281,6 +281,55 @@
                 ]
             }
         },
+        "/api/users/role/{id}": {
+            "patch": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user role",
+                "description": "Update user role",
+                "operationId": "89da8c0681daaa638de218d1241328d5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User Id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "description": "Request",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRoleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserRoleResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/user": {
             "get": {
                 "tags": [
@@ -485,8 +534,24 @@
                     },
                     "role": {
                         "description": "User role",
-                        "type": "integer",
-                        "example": 2
+                        "type": "string",
+                        "example": "admin"
+                    }
+                },
+                "type": "object"
+            },
+            "UserRoleRequest": {
+                "title": "UserRoleRequest",
+                "description": "User role request",
+                "properties": {
+                    "role": {
+                        "description": "User role",
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "user"
+                        ],
+                        "example": "admin"
                     }
                 },
                 "type": "object"
@@ -563,6 +628,37 @@
                         "description": "Date of Creation",
                         "type": "string",
                         "example": "2025-05-25 17:14:30"
+                    },
+                    "updated_at": {
+                        "description": "Date of Update",
+                        "type": "string",
+                        "example": "2025-05-25 17:14:30"
+                    }
+                },
+                "type": "object"
+            },
+            "UserRoleResource": {
+                "title": "UserRoleResource",
+                "description": "User",
+                "properties": {
+                    "id": {
+                        "description": "User ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "User Name",
+                        "type": "string",
+                        "example": "Ivan"
+                    },
+                    "role": {
+                        "description": "User role",
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "user"
+                        ],
+                        "example": "admin"
                     },
                     "updated_at": {
                         "description": "Date of Update",

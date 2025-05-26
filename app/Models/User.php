@@ -40,6 +40,19 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public const int ROLE_USER = 1;
+    public const int ROLE_ADMIN = 2;
+
+    public const array ROLES = [
+        'admin' => self::ROLE_ADMIN,
+        'user' => self::ROLE_USER,
+    ];
+
+    public const array ROLES_REVERSE = [
+        self::ROLE_USER => 'user',
+        self::ROLE_ADMIN => 'admin',
+    ];
+
 
 
     /**

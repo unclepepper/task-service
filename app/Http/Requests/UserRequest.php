@@ -33,8 +33,8 @@ use OpenApi\Attributes\Schema;
         new Property(
             property: 'role',
             description: 'User role',
-            type: 'integer',
-            example: 2,
+            type: 'string',
+            example: 'admin',
         ),
 
     ]
@@ -60,7 +60,6 @@ class UserRequest extends FormRequest
             'name'      => 'required|string|required|max:50',
             'email'     => 'required|string|email|required|max:50|unique:users',
             'password'  => 'required|string|required|min:3',
-            'role'      => 'nullable|integer',
         ];
     }
 }

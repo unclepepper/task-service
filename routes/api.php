@@ -2,17 +2,16 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-
-
-use App\Http\Controllers\User\CurrentController as UserCurrentController;
-use App\Http\Controllers\User\DeleteController as UserDeleteController;
-use App\Http\Controllers\User\EditController as UserEditController;
-use App\Http\Controllers\User\IndexController as UserIndexController;
 use App\Http\Controllers\Task\DeleteController as TaskDeleteController;
 use App\Http\Controllers\Task\EditController as TaskEditController;
 use App\Http\Controllers\Task\IndexController as TaskIndexController;
 use App\Http\Controllers\Task\NewController as TaskNewController;
 use App\Http\Controllers\Task\TaskController as TaskController;
+use App\Http\Controllers\User\ChangeUserRoleController;
+use App\Http\Controllers\User\CurrentController as UserCurrentController;
+use App\Http\Controllers\User\DeleteController as UserDeleteController;
+use App\Http\Controllers\User\EditController as UserEditController;
+use App\Http\Controllers\User\IndexController as UserIndexController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -35,6 +34,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /** Обновление профиля (только текущий пользователь может обновить свои данные) */
     Route::patch('/users/{id}', [UserEditController::class, 'edit']);
+
+    /** Обновление роли юзера (только администратор может поменять роль) */
+    Route::patch('/users/role/{id}', [ChangeUserRoleController::class, 'editRole'])->middleware('role_admin');
 
     /** Удаление пользователя (только администратор может удалить пользователя). */
     Route::delete('/users/{id}', [UserDeleteController::class, 'delete'])->middleware('role_admin');

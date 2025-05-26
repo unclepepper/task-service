@@ -82,4 +82,7 @@ test: ## Запуск автотестов
 sw-gen:
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} php artisan l5-swagger:generate
 
+admin:
+	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} php artisan user:create-admin
+
 .PHONY: cc right test sw-gen

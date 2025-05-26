@@ -18,17 +18,10 @@ class UserRepository implements UserRepositoryInterface
 
     public function create(array $data): User
     {
-        $role = 1;
-
-        if($data['role']){
-            $role = $data['role'];
-        }
-
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => $role,
         ]);
     }
 
@@ -59,6 +52,22 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return $user;
+    }
+
+    public function updateRole(User $user, array $data): ?User
+    {
+
+        if($data['role'] ||
+            array_key_exists($data['role'], User::ROLES)
+        ){
+            $role = User::ROLES[$data['role']];
+
+            $user->update(['role' => $role]);
+
+            return $user;
+        }
+
+        return null;
     }
 
     public function delete(int $id): bool
