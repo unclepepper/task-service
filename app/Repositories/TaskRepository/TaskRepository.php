@@ -9,9 +9,17 @@ use Illuminate\Support\Collection;
 
 class TaskRepository implements TaskRepositoryInterface
 {
-    public function findAllByUserId(int $userId): Collection
+    public function findAllByUserId(int $userId, ?string $status = null): Collection
     {
-        return Task::where(['user_id' => $userId])->get();
+        $qb =  Task::where([
+            'user_id' => $userId
+        ]);
+
+        if (!is_null($status)) {
+            $qb->where('status', $status);
+        }
+
+        return $qb->get();
     }
 
     public function findById(int $id, int $userId): ?Task

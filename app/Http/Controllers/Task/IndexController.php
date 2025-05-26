@@ -26,11 +26,15 @@ class IndexController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $tasks = $this->taskRepository->findAllByUserId($currentUserId);
+        $status = null;
 
         if (request()->has('status')) {
-            $tasks->where('status', request()->status);
+            $status = request()->status;
         }
+
+        $tasks = $this->taskRepository->findAllByUserId($currentUserId, $status);
+
+
 
         return response()->json(TaskResource::collection($tasks));
     }

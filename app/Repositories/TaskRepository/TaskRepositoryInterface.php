@@ -12,7 +12,7 @@ interface TaskRepositoryInterface
      * @param int $userId
      * @return Collection
      */
-    public function findAllByUserId(int $userId): Collection;
+    public function findAllByUserId(int $userId, ?string $status = null): Collection;
 
 
     public function create(array $data, int $user): Task;
