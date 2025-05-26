@@ -53,15 +53,12 @@ class DeleteController extends Controller
 
     public function delete(int $id): JsonResponse
     {
-        try {
-            $user = $this->userRepository->getByIdOrFail($id);
-        } catch (ModelNotFoundException) {
-            return response()->json(['message' => 'User not found'], 404);
+        if ($this->userRepository->delete($id)) {
+            return response()->json(['message' => 'Deleted successfully'], 204);
         }
 
-        $this->userRepository->delete($user);
-
-        return response()->json(null, 204);
+        return response()->json(['message' => 'User not found'], 404);
     }
+
 
 }
