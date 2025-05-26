@@ -19,7 +19,7 @@ class CheckAdminRoleMiddleware
         $user = Auth::user();
 
         if(!$user->isAdmin()) {
-            return response()->json(['error'=>'Доступ запрещен'],403);
+            return response()->json(['error'=>'Access denied'],403);
         }
 
         return $next($request);
