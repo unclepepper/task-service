@@ -52,7 +52,7 @@ use OpenApi\Attributes\Response;
         ),
     ]
 )]
-class ChangeUserRoleController extends Controller
+class UserRoleController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository

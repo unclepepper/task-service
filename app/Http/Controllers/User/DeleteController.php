@@ -7,7 +7,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository\UserRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes\Delete;
 use OpenApi\Attributes\Parameter;

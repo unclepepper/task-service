@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories\TaskRepository;
 
 use App\Models\Task;
-use App\Models\User;
 use Illuminate\Support\Collection;
 
 interface TaskRepositoryInterface

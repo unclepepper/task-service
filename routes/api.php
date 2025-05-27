@@ -7,7 +7,7 @@ use App\Http\Controllers\Task\EditController as TaskEditController;
 use App\Http\Controllers\Task\IndexController as TaskIndexController;
 use App\Http\Controllers\Task\NewController as TaskNewController;
 use App\Http\Controllers\Task\TaskController as TaskController;
-use App\Http\Controllers\User\ChangeUserRoleController;
+use App\Http\Controllers\User\UserRoleController;
 use App\Http\Controllers\User\CurrentController as UserCurrentController;
 use App\Http\Controllers\User\DeleteController as UserDeleteController;
 use App\Http\Controllers\User\EditController as UserEditController;
@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/users/{id}', [UserEditController::class, 'edit']);
 
     /** Обновление роли юзера (только администратор может поменять роль) */
-    Route::patch('/users/role/{id}', [ChangeUserRoleController::class, 'editRole'])->middleware('role_admin');
+    Route::patch('/users/role/{id}', [UserRoleController::class, 'editRole'])->middleware('role_admin');
 
     /** Удаление пользователя (только администратор может удалить пользователя). */
     Route::delete('/users/{id}', [UserDeleteController::class, 'delete'])->middleware('role_admin');
