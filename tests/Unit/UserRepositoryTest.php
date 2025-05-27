@@ -96,6 +96,19 @@ class UserRepositoryTest extends TestCase
     }
 
     #[Test]
+    public function test_update_user_role()
+    {
+        $user = User::factory()->create(['role' => 1]);
+
+        $updatedUser = $this->userRepository->updateRole($user, ['role' => 'admin']);
+
+        $this->assertEquals(2, $updatedUser->role);
+
+        $freshUser = User::find($user->id);
+        $this->assertEquals(2, $freshUser->role);
+    }
+
+    #[Test]
     public function test_delete_user()
     {
         $user = User::factory()->create();
@@ -107,4 +120,5 @@ class UserRepositoryTest extends TestCase
         // Проверяем, что пользователь удален из базы
         $this->assertNull(User::find($user->id));
     }
+
 }
