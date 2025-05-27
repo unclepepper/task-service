@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -42,13 +44,10 @@ class UserRepositoryTest extends TestCase
     #[Test]
     public function test_get_user_by_id()
     {
-        // Создаем пользователя в базе данных
         $user = User::factory()->create();
 
-        // Используем репозиторий для получения пользователя по ID
         $foundUser = $this->userRepository->getByIdOrFail($user->id);
 
-        // Проверяем, что найденный пользователь совпадает с созданным
         $this->assertInstanceOf(User::class, $foundUser);
         $this->assertEquals($user->id, $foundUser->id);
     }
@@ -92,7 +91,6 @@ class UserRepositoryTest extends TestCase
 
         $this->assertEquals('New Name', $updatedUser->name);
 
-        // Проверяем, что изменения сохранились в базе
         $freshUser = User::find($user->id);
         $this->assertEquals('New Name', $freshUser->name);
     }
