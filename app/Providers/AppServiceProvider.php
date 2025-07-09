@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,25 +12,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            \App\Repositories\UserRepository\UserRepositoryInterface::class,
-            \App\Repositories\UserRepository\UserRepository::class,
-        );
-
-        $this->app->bind(
-            \App\Repositories\TaskRepository\TaskRepositoryInterface::class,
-            \App\Repositories\TaskRepository\TaskRepository::class,
-        );
-
-        $this->app->bind(
-            \App\Service\User\UserValidationRulesServiceInterface::class,
-            \App\Service\User\UserValidationRulesService::class,
-        );
-
-        $this->app->bind(
-            \App\Service\Task\TaskValidationRulesServiceInterface::class,
-            \App\Service\Task\TaskValidationRulesService::class,
-        );
+        //
     }
 
     /**
@@ -38,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Vite::prefetch(concurrency: 3);
     }
 }
